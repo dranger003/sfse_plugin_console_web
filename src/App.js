@@ -66,6 +66,7 @@ export function App() {
           command={command}
           setCommand={setCommand}
           sendInput={sendInput}
+          scrollToBottom={scrollToBottom}
         />
       </Flex>
     </ChakraProvider>
