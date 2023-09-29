@@ -1,0 +1,60 @@
+@import "@fontsource/jetbrains-mono";
+
+body {
+    font-family: 'JetBrains Mono', monospace !important;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+    background: url('background.png') no-repeat calc(100% - 100px) bottom;
+    background-size: 250px auto;
+    background-attachment: fixed;
+    opacity: 0.15;
+}
+
+textarea,
+.message {
+    background-color: rgba(0, 0, 0, 0.15) !important;
+    border-color: rgba(180, 197, 224, 0.2) !important;
+    border-width: 2px !important;
+    color: #ddd !important;
+    font-size: 87% !important;
+    padding: 8px 10px !important;
+}
+
+button:focus-visible,
+textarea:focus-visible {
+    border-color: inherit !important;
+    box-shadow: 0 0 0 1.5px #bbb !important;
+}
+
+textarea::selection,
+.message::selection {
+    color: #ddd !important;
+    background: #304c7a !important;
+}
+
+.message {
+    border-radius: var(--chakra-radii-md) !important;
+    width: 100%;
+}
+
+.scrollable {
+    scrollbar-color: darkgrey slategrey;
+
+    ::-webkit-scrollbar {
+        height: 4px !important;
+        width: 4px !important;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background-color: darkgrey;
+        outline: 1px solid slategrey;
+    }
+}
