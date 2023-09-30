@@ -47,7 +47,7 @@ export function App() {
   };
 
   const sendInput = async (cmd) => {
-    const res = await fetch("http://127.0.0.1:55555/console", { method: "POST", body: cmd });
+    const res = await fetch("/console", { method: "POST", body: cmd });
     const msg = await res.text();
     setMessages(prev => [...prev, `> ${msg.replace(/\n/g, "<br />")}`]);
   };
