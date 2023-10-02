@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import { ChakraProvider, Flex, extendTheme } from "@chakra-ui/react";
+import { Button, ChakraProvider, Flex, HStack, extendTheme } from "@chakra-ui/react";
 import { ConsoleInput } from "./components/ConsoleInput";
 import { ConsoleOutput } from "./components/ConsoleOutput";
 import { Banner } from "./components/Banner";
@@ -54,7 +54,7 @@ export function App() {
 
   return (
     <ChakraProvider theme={theme}>
-      <Flex direction="column" height="100vh" p={4} gap={4}>
+      <Flex direction="column" height="100vh" p={4} gap={2}>
         <Banner />
         <ConsoleOutput
           scrollRef={scrollRef}
@@ -62,6 +62,12 @@ export function App() {
           showScrollButton={showScrollButton}
           scrollToBottom={scrollToBottom}
         />
+        <HStack>
+          <Button size="sm" onClick={() => sendInput("GetSFSEVersion")}>GetSFSEVersion</Button>
+          <Button size="sm" onClick={() => sendInput("sfse_plugin_console_api_dump_config")}>PrintPluginConfig</Button>
+          <Button size="sm" onClick={() => sendInput("sfse_plugin_console_api_reload_config")}>ReloadPluginConfig</Button>
+          <Button size="sm" onClick={() => sendInput("00000014.ShowInventory")}>Player.ShowInventory</Button>
+        </HStack>
         <ConsoleInput
           command={command}
           setCommand={setCommand}

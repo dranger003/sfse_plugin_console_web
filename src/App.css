@@ -1,7 +1,16 @@
-@import "@fontsource/jetbrains-mono";
+@import "@fontsource/roboto";
+@import "@fontsource/roboto-mono";
 
 body {
-    font-family: 'JetBrains Mono', monospace !important;
+    font-family: 'Roboto', sans-serif !important;
+}
+
+button {
+    color: #ddd !important;
+    border-color: rgba(156, 170, 194, 0.2) !important;
+    border-width: 2px !important;
+    font-size: 0.830em !important;
+    letter-spacing: 0.055em !important;
 }
 
 body::before {
@@ -24,7 +33,8 @@ textarea,
     border-color: rgba(180, 197, 224, 0.2) !important;
     border-width: 2px !important;
     color: #ddd !important;
-    font-size: 87% !important;
+    font-family: 'Roboto Mono', monospace !important;
+    font-size: 0.791em !important;
     padding: 8px 10px !important;
 }
 
