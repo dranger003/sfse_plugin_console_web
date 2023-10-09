@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import { Button, ChakraProvider, Flex, HStack, extendTheme } from "@chakra-ui/react";
+import { Button, ChakraProvider, Flex, HStack, Spacer, extendTheme } from "@chakra-ui/react";
 import { ConsoleInput } from "./components/ConsoleInput";
 import { ConsoleOutput } from "./components/ConsoleOutput";
 import { Banner } from "./components/Banner";
@@ -67,6 +67,8 @@ export function App() {
           <Button size="sm" onClick={() => sendInput("sfse_plugin_console_api_dump_config")}>PrintPluginConfig</Button>
           <Button size="sm" onClick={() => sendInput("sfse_plugin_console_api_reload_config")}>ReloadPluginConfig</Button>
           <Button size="sm" onClick={() => sendInput("00000014.ShowInventory")}>Player.ShowInventory</Button>
+          <Button size="sm" onClick={() => sendInput("GetSelectedRef.ShowInventory")}>GetSelectedRef.ShowInventory</Button>
+          <Spacer />
         </HStack>
         <ConsoleInput
           command={command}
