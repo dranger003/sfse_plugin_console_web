@@ -8,17 +8,13 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@fontsource/roboto": "^5.0.8",
-    "@fontsource/roboto-mono": "^5.0.8",
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
+    "@fontsource/roboto-mono": "^5.0.13",
     "@testing-library/user-event": "^14.5.1",
-    "framer-motion": "^6.5.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-icons": "^3.11.0",
+    "react-icons": "^4.11.0",
     "react-scripts": "5.0.1",
-    "serve": "^14.2.1",
-    "web-vitals": "^2.1.4"
+    "serve": "^14.2.1"
   },
   "scripts": {
     "start": "react-scripts start",
