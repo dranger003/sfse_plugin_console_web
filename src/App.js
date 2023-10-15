@@ -1,9 +1,11 @@
 import { useRef, useState, useEffect } from "react";
-import { Button, ChakraProvider, Flex, HStack, Spacer, extendTheme } from "@chakra-ui/react";
-import { ConsoleInput } from "./components/ConsoleInput";
-import { ConsoleOutput } from "./components/ConsoleOutput";
+import { Badge, ChakraProvider, Flex, HStack, Spacer, extendTheme } from "@chakra-ui/react";
 import { Banner } from "./components/Banner";
-import "./App.css"
+import { ConsoleOutput } from "./components/ConsoleOutput";
+import { QuickCommands } from "./components/QuickCommands";
+import { ModeBadge } from "./components/ModeBadge";
+import { ConsoleInput } from "./components/ConsoleInput";
+import "./App.css";
 
 export function App() {
   const theme = extendTheme({
@@ -14,16 +16,33 @@ export function App() {
   });
 
   const scrollRef = useRef(null);
+  const streamRef = useRef(null);
 
+  const [readyState, setReadyState] = useState(EventSource.CLOSED);
   const [showScrollButton, setShowScrollButton] = useState(false);
   const [command, setCommand] = useState("");
   const [messages, setMessages] = useState([]);
+  const [quickCommands, setQuickCommands] = useState([]);
+  const [quickCommand, setQuickCommand] = useState("");
+  const [mode, setMode] = useState("command");
 
   const handleScroll = () => {
     const scrollElement = scrollRef.current;
     const isAtBottom = scrollElement.scrollTop === (scrollElement.scrollHeight - scrollElement.offsetHeight);
     setShowScrollButton(!isAtBottom);
   };
+
+  useEffect(() => {
+    const query = new URLSearchParams(window.location.search);
+    const requestedMode = query.get("mode");
+    if (requestedMode === "command" || requestedMode === "stream")
+      setMode(requestedMode);
+
+    fetch("/QuickCommands.json")
+      .then(res => res.json())
+      .then(data => setQuickCommands(data))
+      .catch(() => window.alert("Unable to load quick commands!"));
+  }, []);
 
   useEffect(() => {
     const scrollElement = scrollRef.current;
@@ -39,6 +58,28 @@ export function App() {
     };
   }, [messages]);
 
+  useEffect(() => {
+    if (streamRef.current)
+      streamRef.current.close();
+
+    if (mode !== "stream")
+      return;
+
+    streamRef.current = new EventSource("/stream");
+    streamRef.current.onopen = () => { setReadyState(streamRef.current.readyState) };
+    streamRef.current.onerror = () => { setReadyState(streamRef.current.readyState) };
+    streamRef.current.onmessage = (event) => {
+      setReadyState(streamRef.current.readyState)
+
+      const decodedData = atob(event.data);
+      setMessages(prev => {
+        const lastItem = prev.pop() || "";
+        const updatedLastItem = lastItem === "" ? decodedData : `${lastItem}${decodedData}`;
+        return [...prev, updatedLastItem];
+      });
+    };
+  }, [mode]);
+
   const scrollToBottom = () => {
     const scrollElement = scrollRef.current;
     if (scrollElement) {
@@ -46,10 +87,32 @@ export function App() {
     }
   };
 
-  const sendInput = async (cmd) => {
-    const res = await fetch("/console", { method: "POST", body: cmd });
-    const msg = await res.text();
-    setMessages(prev => [...prev, `> ${msg.replace(/\n/g, "<br />")}`]);
+  const sendInput = (cmd) => {
+    fetch(`/console?mode=${mode}`, { method: "POST", body: cmd })
+      .then(res => res.text())
+      .then(msg => {
+        setQuickCommand("");
+        if (mode === "command") {
+          setMessages(prev => [...prev, `> ${msg}`]);
+        }
+      });
+  };
+
+  const sendQuickCommand = (target) => {
+    const cmd = target.command;
+    const confirm = target.confirm;
+    if (confirm)
+      if (!window.confirm(`Are you sure you want to execute the command "${cmd}"?`))
+        return;
+
+    sendInput(cmd);
+  };
+
+  const switchMode = () => {
+    if (window.confirm("Switching mode will reload the page and clear all history, do you want to continue?")) {
+      const newMode = mode === "command" ? "stream" : "command";
+      window.location.href = `${window.location.origin}${window.location.pathname}?mode=${newMode}`;
+    }
   };
 
   return (
@@ -63,12 +126,27 @@ export function App() {
           scrollToBottom={scrollToBottom}
         />
         <HStack>
-          <Button size="sm" onClick={() => sendInput("GetSFSEVersion")}>GetSFSEVersion</Button>
-          <Button size="sm" onClick={() => sendInput("sfse_plugin_console_api_dump_config")}>PrintPluginConfig</Button>
-          <Button size="sm" onClick={() => sendInput("sfse_plugin_console_api_reload_config")}>ReloadPluginConfig</Button>
-          <Button size="sm" onClick={() => sendInput("00000014.ShowInventory")}>Player.ShowInventory</Button>
-          <Button size="sm" onClick={() => sendInput("GetSelectedRef.ShowInventory")}>GetSelectedRef.ShowInventory</Button>
+          <QuickCommands
+            quickCommand={quickCommand}
+            quickCommands={quickCommands}
+            sendQuickCommand={sendQuickCommand}
+          />
           <Spacer />
+          <ModeBadge
+            mode={mode}
+            switchMode={switchMode}
+          />
+          {mode === "stream" && (
+            <Badge colorScheme={
+              readyState === EventSource.CONNECTING ? "yellow" :
+                readyState === EventSource.OPEN ? "green" :
+                  readyState === EventSource.CLOSED ? "red" : "gray"
+            }>
+              {readyState === EventSource.CONNECTING ? "Connecting" :
+                readyState === EventSource.OPEN ? "Connected" :
+                  readyState === EventSource.CLOSED ? "Closed" : "Unknown"}
+            </Badge>
+          )}
         </HStack>
         <ConsoleInput
           command={command}

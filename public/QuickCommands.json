@@ -1,0 +1,27 @@
+[
+    {
+        "label": "InstaQuitGame",
+        "command": "qqq",
+        "confirm": true
+    },
+    {
+        "label": "GetSFSEVersion",
+        "command": "GetSFSEVersion"
+    },
+    {
+        "label": "PrintPluginConfig",
+        "command": "sfse_plugin_console_api_dump_config"
+    },
+    {
+        "label": "ReloadPluginConfig",
+        "command": "sfse_plugin_console_api_reload_config"
+    },
+    {
+        "label": "Player.ShowInventory",
+        "command": "00000014.ShowInventory"
+    },
+    {
+        "label": "GetSelectedRef.ShowInventory",
+        "command": "GetSelectedRef.ShowInventory"
+    }
+]

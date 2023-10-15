@@ -5,7 +5,7 @@ body {
     font-family: 'Roboto', sans-serif !important;
 }
 
-button {
+.button {
     color: #ddd !important;
     border-color: rgba(156, 170, 194, 0.2) !important;
     border-width: 2px !important;
@@ -27,19 +27,60 @@ body::before {
     opacity: 0.15;
 }
 
+.popover {
+    border-color: rgba(180, 197, 224, 0.2) !important;
+    border-width: 2px !important;
+    font-size: 0.85em !important;
+}
+
 textarea,
-.message {
-    background-color: rgba(0, 0, 0, 0.15) !important;
+select,
+.message,
+.button {
+    background-color: rgba(0, 0, 0, 0.20) !important;
     border-color: rgba(180, 197, 224, 0.2) !important;
     border-width: 2px !important;
     color: #ddd !important;
+}
+
+.button {
+    background-color: rgba(26, 32, 44, 1) !important;
+    font-weight: 400 !important;
+}
+
+.menulist, .menulist button {
+    font-family: 'Roboto Mono', sans-serif !important;
+    font-size: 0.9em !important;
+    background-color: rgba(26, 32, 44, 1) !important;
+    padding: 0 !important;
+}
+
+.menulist button:first-child {
+    margin-top: 8px !important;
+}
+
+.menulist button:last-child {
+    margin-bottom: 8px !important;
+}
+
+.menulist button {
+    padding: 4px 12px !important;
+}
+
+.menulist button:hover, .menulist button:focus-visible {
+    background-color: rgb(34, 43, 58) !important;
+}
+
+textarea,
+.message {
     font-family: 'Roboto Mono', monospace !important;
-    font-size: 0.791em !important;
+    font-size: 0.831em !important;
     padding: 8px 10px !important;
 }
 
-button:focus-visible,
-textarea:focus-visible {
+.button:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
     border-color: inherit !important;
     box-shadow: 0 0 0 1.5px #bbb !important;
 }
@@ -50,6 +91,7 @@ textarea::selection,
     background: #304c7a !important;
 }
 
+select,
 .message {
     border-radius: var(--chakra-radii-md) !important;
     width: 100%;
