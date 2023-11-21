@@ -65,7 +65,7 @@ export function App() {
     if (mode !== "stream")
       return;
 
-    streamRef.current = new EventSource("/stream");
+    streamRef.current = new EventSource(`${process.env.NODE_ENV === "development" ? "http://127.0.0.1:12345" : ""}/stream`);
     streamRef.current.onopen = () => { setReadyState(streamRef.current.readyState) };
     streamRef.current.onerror = () => { setReadyState(streamRef.current.readyState) };
     streamRef.current.onmessage = (event) => {
@@ -88,7 +88,7 @@ export function App() {
   };
 
   const sendInput = (cmd) => {
-    fetch(`/console?mode=${mode}`, { method: "POST", body: cmd })
+    fetch(`${process.env.NODE_ENV === "development" ? "http://127.0.0.1:12345" : ""}/console?mode=${mode}`, { method: "POST", body: cmd })
       .then(res => res.text())
       .then(msg => {
         setQuickCommand("");

@@ -12,11 +12,13 @@ export function ConsoleInput({ command, setCommand, scrollToBottom, sendInput })
     }, [commandHistory]);
 
     const submitInput = () => {
-        const cmd = command;
-        setCommandHistory(prev => [...prev, cmd]);
-        setCommand("");
-        setManualEdit(false);
-        sendInput(cmd);
+        const cmds = command.split("\n");
+        for (let cmd of cmds) {
+            setCommandHistory(prev => [...prev, cmd]);
+            setCommand("");
+            setManualEdit(false);
+            sendInput(cmd);
+        }
     };
 
     const handleInputChange = (e) => {
